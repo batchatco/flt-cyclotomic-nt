@@ -1,0 +1,36 @@
+name = "«flt-cyclotomic-nt»"
+defaultTargets = ["CyclotomicNT"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+relaxedAutoImplicit = false
+maxSynthPendingDepth = 3
+# `native_decide` decides the irregular-index Bernoulli certificates (e.g.
+# `irregularIndices_37`) via a memoized `bern`, behind a guarded `@[csimp]`
+# bridge. Mathlib bans `native_decide` (kernel-only trust contract); this
+# project's trust is compiler-inclusive and disclosed via `#print axioms`.
+# Hence disabled here.
+weak.linter.style.nativeDecide = false
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.31.0"
+
+# The shared class-group core (Herbrand/Vandiver/Stickelberger/Kummer) used by both
+# flt-vandiver and flt-regular-extended needs flt-regular's foundations (Kummer's lemma,
+# Hilbert 94, the descent). Pinned to flt-vandiver's commit.
+[[require]]
+name = "«flt-regular»"
+git = "https://github.com/leanprover-community/flt-regular.git"
+rev = "215d1c49d1f163e83a30e89a709202146b808638"
+
+# StkBridge uses the Stickelberger development (mathlib-only sibling package).
+[[require]]
+name = "«flt-stickelberger»"
+path = "../flt-stickelberger"
+
+[[lean_lib]]
+name = "CyclotomicNT"
+globs = ["CyclotomicNT", "CyclotomicNT.*"]
