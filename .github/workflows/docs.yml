@@ -1,0 +1,49 @@
+name: Blueprint & API docs
+
+# Builds the leanblueprint web + PDF and the doc-gen4 API documentation, then
+# deploys them to GitHub Pages:
+#   * blueprint web  ->  https://batchatco.github.io/<repo>/blueprint/
+#   * API docs       ->  https://batchatco.github.io/<repo>/docs/   (matches \dochome)
+#
+# doc-gen4 is set up by docgen-action inside an ephemeral ./docbuild folder, so this
+# repository's own lakefile.toml / lake-manifest.json are never touched.
+#
+# Note: GitHub Pages publishes only once the repository is public (free plan), so the
+# deploy step is effectively a no-op until the go-public flip.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build project (elan + Mathlib cache + lake build)
+        uses: leanprover/lean-action@f807b338d95de7813c5c50d018f1c23c9b93b4ec # v1.2.0
+        with:
+          build-args: "--log-level=warning"
+          lint: false
+          test: false
+
+      - name: Blueprint + API docs + deploy to Pages
+        uses: leanprover-community/docgen-action@10db47458f91456d87804787d3dfcd914b9a19e3 # main, pinned 2026-08
+        with:
+          blueprint: true
+          api-docs: true
+          build-page: false
