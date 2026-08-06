@@ -1,0 +1,74 @@
+name: Blueprint
+
+# Builds the leanblueprint web + PDF and deploys them to GitHub Pages:
+#   * blueprint web  ->  https://batchatco.github.io/<repo>/blueprint/
+#   * blueprint PDF  ->  https://batchatco.github.io/<repo>/blueprint.pdf
+#
+# This repository's default `lake build` target pulls large native_decide / kernel
+# certificates whose compilation is infeasible on a CI runner, so we deliberately do
+# NOT build the Lean project or run doc-gen4 / checkdecls here. The blueprint web + PDF
+# are pure LaTeX/plastex and need no Lean build. (The full source is browsable via the
+# paper's `\src` file:line links.)
+#
+# Note: GitHub Pages publishes only once the repository is public (free plan), so the
+# deploy step is effectively a no-op until the go-public flip.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Free disk space (texlive-full is large)
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc \
+                      /usr/local/.ghcup /opt/hostedtoolcache/CodeQL \
+                      /usr/local/share/boost "${AGENT_TOOLSDIRECTORY:-}" || true
+          sudo docker image prune --all --force || true
+          df -h /
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build blueprint (PDF + web) — no Lean build
+        uses: xu-cheng/texlive-action@f886de8159e5952a131848a5fa9c3196a2132b5d # v2
+        with:
+          docker_image: ghcr.io/xu-cheng/texlive-full:20250401
+          run: |
+            apk update
+            apk add --update make py3-pip git pkgconfig graphviz graphviz-dev gcc musl-dev
+            git config --global --add safe.directory "$GITHUB_WORKSPACE"
+            git config --global --add safe.directory "$(pwd)"
+            python3 -m venv env
+            source env/bin/activate
+            pip install --upgrade pip requests wheel
+            pip install pygraphviz --config-settings="--global-option=build_ext" --config-settings="--global-option=-L/usr/lib/graphviz/" --config-settings="--global-option=-R/usr/lib/graphviz/"
+            pip install leanblueprint
+            leanblueprint pdf
+            mkdir -p site/blueprint
+            cp blueprint/print/print.pdf site/blueprint.pdf
+            leanblueprint web
+            cp -r blueprint/web/* site/blueprint/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
