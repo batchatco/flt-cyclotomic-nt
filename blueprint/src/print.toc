@@ -1,0 +1,4 @@
+\contentsline {section}{\numberline {0.1}The kernel Bernoulli / irregularity certificate}{1}{section.0.1}%
+\contentsline {section}{\numberline {0.2}Class-group Stickelberger and Herbrand}{1}{section.0.2}%
+\contentsline {section}{\numberline {0.3}The cyclotomic-unit index}{1}{section.0.3}%
+\contentsline {section}{\numberline {0.4}Case I criterion and the prime predicates}{2}{section.0.4}%

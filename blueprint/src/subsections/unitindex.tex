@@ -1,0 +1,18 @@
+\section{The cyclotomic-unit index}\label{sec:unitindex}
+
+\begin{theorem}[Cyclotomic-unit index, Washington Thm 8.2]\label{thm:unitindex}
+  \lean{CyclotomicNT.cyclotomic_unit_index}
+  \leanok
+  The index of the group $C$ of cyclotomic units in the full unit group $E$ of
+  $K^{+}$ equals the plus class number: $[E:C] = \hplus$. The proof runs through
+  the analytic class-number formula and a regulator/determinant computation
+  (the \code{Eigen}, \code{Dedekind}, and $L$-value modules).
+\end{theorem}
+
+\begin{theorem}[Unit index, proof form]\label{thm:unitindexproof}
+  \lean{CyclotomicNT.cyclotomic_unit_index_proof}
+  \leanok
+  \uses{thm:unitindex}
+  The packaged form of the index theorem exported to the engine, where it lifts
+  the $Q_i$ certificate to the Vandiver condition $p \nmid \hplus$.
+\end{theorem}

@@ -1,0 +1,27 @@
+\section{Case I criterion and the prime predicates}\label{sec:casei}
+
+\begin{theorem}[Cauchy--Genocchi Case I criterion]\label{thm:caseI}
+  \lean{CyclotomicNT.caseI_of_not_irregular}
+  \leanok
+  \uses{def:irrcert, thm:herbrandeigen}
+  If $p \nmid B_{p-3}$ (equivalently $p-3$ is not an irregular index), then the
+  first case of Fermat's Last Theorem holds for $p$. The load-bearing step is the
+  unconditional implication that a Case~I factorization with a good Mirimanoff
+  ratio forces $p \mid B_{p-3}$.
+\end{theorem}
+
+\begin{definition}[Vandiver prime]\label{def:vandiverprime}
+  \lean{IsVandiverPrime}
+  \leanok
+  \uses{thm:unitindex}
+  \code{IsVandiverPrime}~$p$: $p \nmid \hplus$ --- the condition the engine needs,
+  characterized via the unit index and certified per prime by the $Q_i$ test.
+\end{definition}
+
+\begin{definition}[Regular prime]\label{def:regularprime}
+  \lean{IsRegularPrime}
+  \leanok
+  \uses{thm:notirr, def:vandiverprime}
+  \code{IsRegularPrime}~$p$: $p \nmid h(K)$, equivalently $p$ divides no Bernoulli
+  numerator $B_2,\dots,B_{p-3}$ (minus part) and $p \nmid \hplus$ (plus part).
+\end{definition}

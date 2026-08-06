@@ -1,0 +1,23 @@
+% Top-level content for the flt-cyclotomic-nt blueprint.
+\blueprintfrontmatter
+
+\begin{abstract}
+This blueprint maps \code{flt-cyclotomic-nt}, the number-theoretic core shared by
+the engine and the regular-prime route. It develops four exports:
+\begin{itemize}
+  \item a kernel-checkable Bernoulli-numerator (irregularity) certificate;
+  \item Herbrand's theorem, in eigenspace form, from the class-group Stickelberger
+    relation (assembled from the single-prime core of \code{flt-stickelberger});
+  \item the cyclotomic-unit index $[E:C] = \hplus$ (Washington Thm~8.2); and
+  \item the Cauchy--Genocchi Case~I criterion.
+\end{itemize}
+The single-prime Stickelberger relation is consumed from \code{flt-stickelberger}
+and appears here as an external leaf. Nodes link by \code{\textbackslash lean} to
+their declarations (\code{CyclotomicNT}, \code{FaithSpike}, \code{IrrCertNat}, and
+a few top-level names).
+\end{abstract}
+
+\input{subsections/bernoulli}
+\input{subsections/stickherbrand}
+\input{subsections/unitindex}
+\input{subsections/casei}

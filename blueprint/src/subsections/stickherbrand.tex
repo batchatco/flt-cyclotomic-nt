@@ -1,0 +1,41 @@
+\section{Class-group Stickelberger and Herbrand}\label{sec:stickherbrand}
+
+\begin{definition}[Single-prime Stickelberger (external)]\label{ext:stksingle}
+  \leanok
+  The integral Stickelberger relation for a single prime, in principal-ideal form,
+  consumed from \code{flt-stickelberger}
+  (\code{stickelbergerProd\_prime\_isPrincipal\_of\_descent}).
+\end{definition}
+
+\begin{theorem}[Stickelberger annihilates the class group]\label{thm:stkannih}
+  \lean{CyclotomicNT.stickelberger_annihilates}
+  \leanok
+  \uses{ext:stksingle}
+  The integral Stickelberger element annihilates $\Cl(\OK)$, obtained by reducing
+  the all-ideals statement to the single-prime core over the prime factorization.
+\end{theorem}
+
+\begin{theorem}[All-ideals reduction]\label{thm:stkideal}
+  \lean{stickelberger_annihilates_ideal}
+  \leanok
+  \uses{thm:stkannih}
+  The bridge lemma extending annihilation from principal primes to arbitrary
+  ideals, the form the downstream arguments use.
+\end{theorem}
+
+\begin{theorem}[Herbrand's theorem]\label{thm:herbrand}
+  \lean{CyclotomicNT.herbrand}
+  \leanok
+  \uses{thm:stkannih}
+  For odd $k$ in range, $p \mid \operatorname{num}(B_k)$ forces the $\omega^{1-k}$
+  eigencomponent of the $p$-class group to be nontrivial --- the eigenspace
+  projection of Stickelberger's annihilation.
+\end{theorem}
+
+\begin{theorem}[Herbrand, eigenprojection form]\label{thm:herbrandeigen}
+  \lean{CyclotomicNT.herbrand_eigenProj}
+  \leanok
+  \uses{thm:herbrand}
+  The explicit eigenspace-projection statement consumed by the Case~I and
+  regular-prime arguments.
+\end{theorem}

@@ -1,0 +1,39 @@
+\section{The kernel Bernoulli / irregularity certificate}\label{sec:bernoulli}
+
+\begin{definition}[Pure-\code{Nat} Bernoulli recurrence]\label{def:bmodn}
+  \lean{FaithSpike.bModN}
+  \leanok
+  \code{bModN} computes the Bernoulli numerator $B_k \bmod p$ by a pure-\code{Nat}
+  recurrence that the kernel can \code{decide} directly.
+\end{definition}
+
+\begin{theorem}[Faithfulness]\label{thm:notirr}
+  \lean{FaithSpike.not_irregular_of_bModN}
+  \leanok
+  \uses{def:bmodn}
+  The recurrence is faithful: if \code{bModN} is nonzero then $p \nmid B_k$, so $k$
+  is not an irregular index. This is the dual-use check --- it discharges the
+  Case~I hypothesis at $k = p-3$ and certifies regularity over all $k$.
+\end{theorem}
+
+\begin{definition}[Irregular index]\label{def:isirr}
+  \lean{CyclotomicNT.QiCert.IsIrregularIndex}
+  \leanok
+  \code{IsIrregularIndex}~$p\,k$: $p$ divides the numerator of $B_k$.
+\end{definition}
+
+\begin{definition}[Irregularity list certificate]\label{def:irrcert}
+  \lean{CyclotomicNT.QiCert.irrListCert}
+  \leanok
+  \uses{def:isirr}
+  \code{irrListCert}~$p\,L$: the Boolean certificate that $L$ is exactly the list of
+  irregular indices of $p$.
+\end{definition}
+
+\begin{theorem}[Nat certificate bridge]\label{thm:irrcertbridge}
+  \lean{IrrCertNat.irrListCert_of_certN}
+  \leanok
+  \uses{def:irrcert, thm:notirr}
+  A kernel-\code{decide}d \code{Nat} certificate implies \code{irrListCert}, tying
+  the fast check to the semantic irregular-index list.
+\end{theorem}
