@@ -49,6 +49,18 @@ jobs:
           lint: false
           test: false
 
+      # docgen-action runs `lake exe checkdecls` unconditionally when blueprint:true.
+      # checkdecls comes transitively via flt-regular, so Mathlib-only repos (e.g.
+      # flt-stickelberger) lack it. Provide it here in the CI checkout ONLY — this never
+      # touches the committed lakefile.toml / lake-manifest.json. Idempotent: no-op where
+      # checkdecls is already present. Pinned to the rev the other repos already resolve.
+      - name: Provide checkdecls if missing (CI-only, not committed)
+        run: |
+          if ! grep -q '"checkdecls"' lake-manifest.json; then
+            printf '\n[[require]]\nname = "checkdecls"\ngit = "https://github.com/PatrickMassot/checkdecls.git"\nrev = "3d425859e73fcfbef85b9638c2a91708ef4a22d4"\n' >> lakefile.toml
+            ~/.elan/bin/lake update checkdecls
+          fi
+
       - name: Blueprint + API docs + deploy to Pages
         uses: leanprover-community/docgen-action@10db47458f91456d87804787d3dfcd914b9a19e3 # main, pinned 2026-08
         with:
