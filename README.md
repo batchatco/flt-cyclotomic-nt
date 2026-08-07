@@ -68,6 +68,10 @@ Six sibling libraries (clone them as siblings — Lake uses relative paths), rel
 Each ships an `AxiomAudit.lean` reprinting its headline theorems' axiom base. `sorry`-free on
 Lean / Mathlib `v4.31.0`.
 
+## Blueprint & metadata
+
+A dependency-graph blueprint of this library is under [`blueprint/`](blueprint/) (rendered web + PDF published to GitHub Pages once the family is public). Family-level metadata lives in [`formalization.yaml`](https://github.com/batchatco/flt-vandiver/blob/afm-v1/formalization.yaml) in the flt-vandiver repo.
+
 ---
 
 Apache License 2.0 — see [LICENSE](LICENSE).
