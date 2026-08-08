@@ -16,6 +16,9 @@ name: Blueprint
 on:
   push:
     branches: [master]
+    paths:
+      - 'blueprint/**'
+      - '.github/workflows/blueprint.yml'
   workflow_dispatch:
 
 permissions:
